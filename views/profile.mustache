@@ -1,58 +1,98 @@
 <!doctype html>
+
+
 <html>
 <head>
-    <title>Node Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <title>Wegmans Items</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+    <script src="/js/map.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            console.log('test');
+            $('#itemlist table tbody').on('click', 'td button', deleteitem);
+        });
+    </script>
 </head>
 <body>
-<div class="container">
+<div class="ui secondary pointing menu">
+  <a class="active item" href='/profile'>
+    List
+  </a>
+  <a class="item" href='/account'>
+    Profile
+  </a>
+  <div class="right menu">
+    <a class="ui item" href="/logout">
+      Logout
+    </a>
+  </div>
+</div>
 
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
+<div class="ui grid">
+  <div class="four wide column">
+      <div style="padding:35px;">
+        <canvas id="myCanvas" width="350" height="350" 
+            style="border:1px solid #000000;">
+        </canvas>
+      </div>
+  </div>
+  <div class="eight wide column">
 
     <!--Add item to list-->
-    <form action="/additem" method="POST">
-        Item add
-        <input type="text" name="searchname">
-        <input type="submit" value="Submit">
+    <form class="ui form" action="/additem" method="POST">
+      <div class="field">
+        <label>Item add</label>
+        <input type="text" name="searchname" placeholder="Food name">
+      </div>
+      <button class="ui button" type="submit">Submit</button>
     </form>
 
-    <div class="row">
-
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
-
-                    <p>
-                    <strong>id</strong>: {{user.id}}<br>
-                    <strong>email</strong>: {{user.email}}<br>
-                    <strong>password</strong>:{{user.password}} 
-                    </p>
-
-            </div>
-        </div>
-        
-        {{#user.items}}
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
-                    <p>
-                    <strong>name</strong>: {{name}}<br>
-                    <strong>link</strong>: {{link}}<br>
-                    
-                    </p>
-
-            </div>
-        </div>
-        {{/user.items}}
-
-
+    <!--Render item table-->
+    <div id="itemlist">
+        <table class="ui celled table">
+          <thead>
+            <tr><th>Food</th>
+            <th>Price</th>
+            <th>Remove</th>
+          </tr></thead>
+          <tbody>
+            {{#user.items}}
+            <tr>
+              <td data-label="Food">{{name}}</td>
+              <td data-label="Price">0</td>
+              <td data-label="Remove">
+                  <button class="deleteitem ui icon button" rel="{{_id}}">
+                      <i class="close icon"></i></button>
+              </td>
+            {{/user.items}}
+          </tbody>
+        </table>
     </div>
-
+</div>
+  <div class="four wide column"></div>
 </div>
 </body>
 </html>
+
+<script>
+    function deleteitem(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'DELETE',
+            url: '/deleteitem/' + $(this).attr('rel')
+        }).done(function (response) {
+            if (response) {
+                console.log(response);
+            }
+            else {
+                location.reload(true);
+            }
+        });
+    };
+</script>
