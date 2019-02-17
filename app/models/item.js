@@ -6,6 +6,7 @@ var itemSchema = mongoose.Schema({
     link: String,
     aisle: String,
     side: String,
+    price: Number,
 }, { usePushEach: true });
 
 module.exports = mongoose.model('Item', itemSchema);

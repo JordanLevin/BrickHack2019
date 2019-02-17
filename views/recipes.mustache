@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+    <title>Wegmans Items</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+</head>
+<body>
+<div class="ui secondary pointing menu">
+  <a class="item" href='/profile'>
+    List
+  </a>
+  <a class="active item" href='/recipes'>
+    Recipes
+  </a>
+  <a class="item" href='/account'>
+    Profile
+  </a>
+  <div class="right menu">
+    <a class="ui item" href="/logout">
+      Logout
+    </a>
+  </div>
+</div>
+<!--<div class="ui segment">-->
+  <!--<p></p>-->
+<!--</div>-->
+
+<div class="ui grid">
+  <div class="four wide column"></div>
+  <div class="eight wide column">
+    <form class="ui form " action="/getrecipe" method="POST">
+        <div class="field">
+        <label>Carbs</label>
+        <div class="two fields">
+            <!--<label>Carbs Min: </label>-->
+            <div class="field">
+                <input type="number" name="cmin" placeholder="min">
+            </div>
+            <!--<label>Carbs Max: </label>-->
+            <div class="field">
+                <input type="number" name="cmax" placeholder="max">
+            </div>
+        </div>
+        </div>
+        <h6 class="ui dividing header"></h6>
+        <div class="field">
+        <label>Protein</label>
+        <div class="two fields">
+            <!--<label>Protein Min: </label>-->
+            <div class="field">
+                <input type="number" name="pmin" placeholder="min">
+            </div>
+            <!--<label>Protein Max: </label>-->
+            <div class="field">
+                <input type="number" name="pmax" placeholder="max">
+            </div>
+        </div>
+        </div>
+        <h6 class="ui dividing header"></h6>
+        <div class="field">
+        <label>Fat and Calories</label>
+        <div class="two fields">
+            <!--<label>Fat max: </label>-->
+            <div class="field">
+                <input type="number" name="fmax" placeholder="Fat max">
+            </div>
+            <!--<label>Calorie Max: </label>-->
+            <div class="field">
+                <input type="number" name="clmax" placeholder="Calorie max">
+            </div>
+        </div>
+        </div>
+        <button class="ui button" type="submit">Submit</button>
+    </form>
+
+</div>
+  <div class="four wide column"></div>
+</div>
+</body>
+</html>

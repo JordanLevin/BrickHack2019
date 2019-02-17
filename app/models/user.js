@@ -9,6 +9,7 @@ var itemSchema = mongoose.Schema({
     link: String,
     aisle: String,
     side: String,
+    price: Number,
 }, { usePushEach: true });
 
 // define the schema for our user model
