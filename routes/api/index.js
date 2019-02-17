@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const MongoClient = require('mongodb').MongoClient;
 
+router.use('/users', require('./users'));
 
 module.exports = router;

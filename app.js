@@ -1,52 +1,72 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const errorHandler = require('errorhandler');
 const mustacheExpress = require('mustache-express');
 
-//================================== ROUTES =======================================
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var alexaRouter = require('./routes/alexa');
+//Configure mongoose's promise to global promise
+mongoose.promise = global.Promise;
 
-//================================== LOGINS AND SESSIONS =========================
-var session = require('express-session');
-var passport = require('passport');
-app.use(session({secret: "secretstringthing"}));
-app.use(passport.initialize());
-app.use(passport.session());
+//Configure isProduction variable
+const isProduction = process.env.NODE_ENV === 'production';
 
-var app = express();
+//Initiate our app
+const app = express();
+
+//Configure our app
+app.use(cors());
+app.use(require('morgan')('dev'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({ secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+
+if(!isProduction) {
+  app.use(errorHandler());
+}
+
+//Configure Mongoose
+mongoose.connect('mongodb+srv://admin:wegmansApp@wegmansapp-uin85.mongodb.net/users', { useNewUrlParser: true });
+mongoose.set('debug', true);
+
+//Models and routes
+require('./models/Users');
+require('./config/passport');
+app.use(require('./routes'));
 
 // view engine setup
-app.engine("mustache", mustacheExpress());
+app.engine('mustache', mustacheExpress());
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'mustache');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, './public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+//Error handlers & middlewares
+//if(!isProduction) {
+  //app.use((err, req, res) => {
+    //res.status(err.status || 500);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+    //res.json({
+      //errors: {
+        //message: err.message,
+        //error: err,
+      //},
+    //});
+  //});
+//}
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+//app.use((err, req, res) => {
+  //res.status(err.status || 500);
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error', {});
-});
+  //res.json({
+    //errors: {
+      //message: err.message,
+      //error: {},
+    //},
+  //});
+//});
 
-module.exports = app;
+app.listen(8000, () => console.log('Server running on http://localhost:8000/'));
+
