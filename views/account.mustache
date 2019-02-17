@@ -27,19 +27,23 @@
 <div class="ui grid">
   <div class="four wide column"></div>
   <div class="eight wide column">
-
-        <table class="ui celled table">
-          <tbody>
-            <tr>
-                <td>Name</td>
-                <td>{{user.name}}</td>
-            </tr>
-            <tr>
-              <td>Email</td>
-              <td>{{user.email}}</td>
-            </tr>
-          </tbody>
-        </table>
+    <form class="ui large form user-data" align="left" action="/updateinfo" method="POST">
+        <div class="field">
+            <label>Name: </label>
+            <input type="text" name="name" value="{{user.name}}">
+        </div>
+        <h6 class="ui dividing header"></h6>
+        <div class="field">
+            <label>Email: </label>
+            <input type="text" name="email" value="{{user.email}}">
+        </div>
+        <h6 class="ui dividing header"></h6>
+        <div class="field">
+            <label>My Store: </label>
+            <input type="text" name="mystore" value="{{user.mystore}}">
+        </div>
+        <button class="ui button" type="submit">Save Changes</button>
+    </form>
 
 </div>
   <div class="four wide column"></div>

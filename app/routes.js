@@ -67,11 +67,11 @@ module.exports = function(app, passport) {
     app.post('/additem', isLoggedIn, function(req, res) {
         let item = new Item();
         item.origname = req.body.searchname;
-        console.log(req.body);
+        //console.log(req.body);
+        console.log(req.user.mystore);
 
 
         var sendreq = unirest('GET', 'https://api.wegmans.io/products/search');
-
         sendreq.query(
             {'1': ['', ''], 'query': req.body.searchname, 'api-version': '2018-10-18'});
         sendreq.headers({
@@ -82,17 +82,48 @@ module.exports = function(app, passport) {
         sendreq.end(function(resp) {
             if (resp.error) throw new Error(resp.error);
             console.log(resp.body.results[0]);
-            item.link = '';
+            item.link = resp.body.results[0].sku;
             item.name = resp.body.results[0].name;
-            req.user.items.push(item);
-            req.user.save(function(err) {
-                if (err)
-                    throw err;
-                else
-                    console.log('saving item');
-                // return done(null, newUser);
-                return res.redirect('/profile');
+            //
+            sendreq = unirest("GET", "https://api.wegmans.io/products/"+item.link+"/locations/" + req.user.mystore);
+
+            sendreq.query({
+              "api-version": "2018-10-18"
             });
+
+            sendreq.headers({
+              "postman-token": "b9d8f9f6-b7b2-5d26-343d-2e0fc5bc0274",
+              "cache-control": "no-cache",
+              "subscription-key": "7fd92da6adb745fb979a1b6f13d0d094"
+            });
+
+
+            sendreq.end(function (resloc) {
+              if (resloc.error) throw new Error(res.error);
+                  //console.log(resloc.body);
+                item.aisle = resloc.body.locations[0].name;
+                item.side = resloc.body.locations[0].aisleSide;
+                if(!item.aisle || item.aisle.length > 3){
+                    item.aisle = '0A';
+                }
+                if(!item.side){
+                    item.side = 'Right';
+                }
+                //console.log(item.aisle);
+                //console.log(item.side);
+                req.user.items.push(item);
+                req.user.save(function(err) {
+                    if (err)
+                        throw err;
+                    else
+                        console.log('saving item');
+                    // return done(null, newUser);
+                    return res.redirect('/profile');
+                });
+
+            });
+
+
         });
 
     });
@@ -109,6 +140,19 @@ module.exports = function(app, passport) {
        }
     }
     });
+
+    app.post('/updateinfo', isLoggedIn, function(req, res) {
+        req.user.name = req.body.name;
+        req.user.email = req.body.email;
+        req.user.mystore = req.body.mystore;
+        req.user.save(function(err){
+           if(err) return res.send(err);
+            res.redirect('/account');
+        });
+    });
+
+
+
 };
 
 // route middleware to make sure a user is logged in

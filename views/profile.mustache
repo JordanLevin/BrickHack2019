@@ -14,6 +14,12 @@
       crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
+
+            //Populate map with item locations
+            {{#user.items}}
+                draw("{{& aisle}}", "{{&side}}");
+            {{/user.items}}
+
             //Render map
             render();
 

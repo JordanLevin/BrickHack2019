@@ -7,6 +7,8 @@ var itemSchema = mongoose.Schema({
     origname: String,
     name: String,
     link: String,
+    aisle: String,
+    side: String,
 }, { usePushEach: true });
 
 // define the schema for our user model
@@ -14,6 +16,7 @@ var userSchema = mongoose.Schema({
     name         : String,
     email        : String,
     password     : String,
+    mystore      : Number,
     items        : [itemSchema],
 },{ usePushEach: true });
 
