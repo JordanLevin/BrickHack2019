@@ -14,7 +14,10 @@
       crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
-            console.log('test');
+            //Render map
+            render();
+
+            //Setup delete button
             $('#itemlist table tbody').on('click', 'td button', deleteitem);
         });
     </script>
@@ -37,7 +40,7 @@
 <div class="ui grid">
   <div class="four wide column">
       <div style="padding:35px;">
-        <canvas id="myCanvas" width="350" height="350" 
+        <canvas id="canvasmap" width="400" height="350" 
             style="border:1px solid #000000;">
         </canvas>
       </div>
@@ -95,4 +98,5 @@
             }
         });
     };
+
 </script>
