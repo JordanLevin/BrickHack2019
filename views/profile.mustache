@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    </div>
+
+    <!--Add item to list-->
+    <form action="/additem" method="POST">
+        Item add
+        <input type="text" name="searchname">
+        <input type="submit" value="Submit">
+    </form>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Local</h3>
+
+                    <p>
+                    <strong>id</strong>: {{user.id}}<br>
+                    <strong>email</strong>: {{user.email}}<br>
+                    <strong>password</strong>:{{user.password}} 
+                    </p>
+
+            </div>
+        </div>
+        
+        {{#user.items}}
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Local</h3>
+                    <p>
+                    <strong>name</strong>: {{name}}<br>
+                    <strong>link</strong>: {{link}}<br>
+                    
+                    </p>
+
+            </div>
+        </div>
+        {{/user.items}}
+
+
+    </div>
+
+</div>
+</body>
+</html>

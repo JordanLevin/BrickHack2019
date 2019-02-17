@@ -1,25 +1,21 @@
 {
-  "name": "login",
-  "version": "1.0.0",
-  "description": "a login system",
-  "main": "app.js",
+  "name": "node-authentication",
+  "main": "server.js",
   "dependencies": {
-    "cors": "^2.8.5",
-    "errorhandler": "^1.5.0",
-    "express": "^4.16.4",
-    "express-jwt": "^5.3.1",
-    "express-session": "^1.15.6",
-    "jsonwebtoken": "^8.4.0",
-    "mongoose": "^5.4.13",
-    "morgan": "^1.9.1",
+    "bcrypt-nodejs": "latest",
+    "body-parser": "~1.15.2",
+    "connect-flash": "~0.1.1",
+    "cookie-parser": "~1.4.3",
+    "ejs": "~2.5.2",
+    "express": "~4.14.0",
+    "express-session": "~1.14.1",
+    "method-override": "~2.3.6",
+    "mongoose": "~4.13.1",
+    "morgan": "~1.7.0",
+    "mustache": "^3.0.1",
     "mustache-express": "^1.2.8",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+    "passport": "~0.3.2",
+    "passport-local": "~1.0.0",
+    "q": "^1.5.1"
+  }
 }
